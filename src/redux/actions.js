@@ -1,6 +1,8 @@
 import { RECEIVE_BOOKS, REQUEST_BOOKS, REMOVE_BOOK } from './actionTypes'
 import history from "../utils/history"
+import BooksApi from '../api/books'
 import axios from 'axios'
+
 export const requestBooks = () => ({
   type: REQUEST_BOOKS
 })
@@ -17,23 +19,20 @@ export const removeBook = (id) => ({
 
 export function fetchBooks() {
   return function action(dispatch) {
-    return axios.get('http://localhost:4000/books')
-      .then(response => response.data)
-      .then(json => dispatch(receiveBooks(json)))
+    BooksApi.index().then(json => dispatch(receiveBooks(json)))
   }
 }
 
 export function createBook(book) {
   return function action(dispatch) {
-    return axios.post('http://localhost:4000/books', { book })
-      .then(response => response.data)
-      .then(json => history.push('/'))
+    return BooksApi.create(book).then(json => history.push('/'))
   }
 }
 
 export function deleteBook(id) {
   return function action(dispatch) {
-    return axios.delete('http://localhost:4000/books/' + id)
-      .then(json => dispatch(removeBook(id)))
+    return BooksApi.delete(id).then(json => dispatch(removeBook(id)))
   }
 }
+
+
