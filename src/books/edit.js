@@ -1,10 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { createBook } from '../redux/actions'
+import PropTypes from 'prop-types'
 
-class AddBook extends React.Component {
+class EditBook extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       input: ''
     }
@@ -22,9 +24,15 @@ class AddBook extends React.Component {
     this.props.createBook({ title: this.state.input })
   }
 
+  paramId() {
+    return this.props.match ? this.props.match.params.id : undefined
+  }
+
   render() {
     return(
       <>
+        { this.props.mode }
+        { this.paramId() }
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="titleInput">Title</label>
@@ -37,4 +45,8 @@ class AddBook extends React.Component {
   }
 }
 
-export default connect(null, { createBook })(AddBook)
+EditBook.propTypes = {
+  mode: PropTypes.string
+}
+
+export default connect(null, { createBook })(EditBook)

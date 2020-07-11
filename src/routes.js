@@ -1,6 +1,6 @@
 import React from 'react'
 import Books from './books/index'
-import AddBook from './books/add'
+import EditBook from './books/edit'
 
 import {
   Switch,
@@ -15,9 +15,13 @@ export default function Routes() {
         </Route>
 
         <Route path='/add-book'>
-          <AddBook />
+          <EditBook mode='add'/>
         </Route>
 
+        <Route path='/books/:id/edit' render={
+          (props) => <EditBook {...props} mode='edit' />
+        }>
+        </Route>
         <Route path="/">
           <Books />
         </Route>
