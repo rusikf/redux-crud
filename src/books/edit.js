@@ -1,9 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { createBook } from '../redux/actions'
+import { createBook, updateBook } from '../redux/actions'
 import PropTypes from 'prop-types'
+import BooksApi from '../api/books'
 
 class EditBook extends React.Component {
+  componentDidMount() {
+    const id = this.paramId()
+    if (this.isEditMode()) {
+      BooksApi.read(id).then(json => {
+        this.setState({ input: json.title })
+      })
+    }
+  }
+
   constructor(props) {
     super(props)
 
@@ -21,18 +31,24 @@ class EditBook extends React.Component {
 
   onSubmit(e) {
     e.preventDefault()
+    if (this.isEditMode()) {
+      return this.props.updateBook(this.paramId(), { title: this.state.input })
+    }
+
     this.props.createBook({ title: this.state.input })
   }
 
+  isEditMode() {
+    return !!(this.props.mode === 'edit')
+  }
+
   paramId() {
-    return this.props.match ? this.props.match.params.id : undefined
+    return this.isEditMode() ? this.props.match.params.id : undefined
   }
 
   render() {
     return(
       <>
-        { this.props.mode }
-        { this.paramId() }
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label htmlFor="titleInput">Title</label>
@@ -49,4 +65,4 @@ EditBook.propTypes = {
   mode: PropTypes.string
 }
 
-export default connect(null, { createBook })(EditBook)
+export default connect(null, { createBook, updateBook })(EditBook)
