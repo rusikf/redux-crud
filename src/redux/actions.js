@@ -1,4 +1,4 @@
-import { RECEIVE_BOOKS, REQUEST_BOOKS, REMOVE_BOOK } from './actionTypes'
+import { RECEIVE_BOOKS, REQUEST_BOOKS, REMOVE_BOOK, UPDATE_BOOK } from './actionTypes'
 import history from "../utils/history"
 import BooksApi from '../api/books'
 import axios from 'axios'
@@ -25,13 +25,19 @@ export function fetchBooks() {
 
 export function createBook(book) {
   return function action(dispatch) {
-    return BooksApi.create(book).then(json => history.push('/'))
+    return BooksApi.create(book).then(() => history.push('/'))
   }
 }
 
 export function deleteBook(id) {
   return function action(dispatch) {
     return BooksApi.delete(id).then(json => dispatch(removeBook(id)))
+  }
+}
+
+export function updateBook(id, { title }) {
+  return function action(dispatch) {
+    return BooksApi.update(id, { title }).then(() => history.push('/'))
   }
 }
 
