@@ -3,4 +3,4 @@ export const RECEIVE_BOOKS = 'RECEIVE_BOOKS'
 export const BOOK_ADDED = 'BOOK_ADDED'
 export const REMOVE_BOOK = 'BOOK_REMOVED'
 export const UPDATE_BOOK = 'BOOK_UPDATED'
-
+export const SORT_BOOKS = 'SORT_BOOKS'

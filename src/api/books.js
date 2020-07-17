@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export default {
-  index() {
-    return axios.get('http://localhost:4000/books')
+  index(params={}) {
+    return axios.get('http://localhost:4000/books', { params })
       .then(response => response.data)
   },
   create(book) {
