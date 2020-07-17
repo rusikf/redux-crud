@@ -1,12 +1,23 @@
 import React from 'react'
 import Book from './book'
 import { connect } from 'react-redux'
-import { fetchBooks } from '../redux/actions'
+import { fetchBooks, sortBooks } from '../redux/actions'
 import { Link } from 'react-router-dom'
 
 class Books extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleInput = this.handleInput.bind(this)
+  }
+
   componentDidMount() {
     this.props.fetchBooks()
+  }
+
+  handleInput(e) {
+    const value = e.target.value
+    this.props.fetchBooks({ sort: value })
+    this.props.sortBooks(value)
   }
 
   render() {
@@ -15,7 +26,18 @@ class Books extends React.Component {
     )
     return(
       <>
-        <Link className='btn btn-primary my-4' to='/add-book'>Add book</Link>
+        <div className='row'>
+          <div className='col-2'>
+            <Link className='btn btn-primary my-4' to='/add-book'>Add book</Link>
+          </div>
+          <div className='col-2 offset-8 align-self-center'>
+            <select name='sortField' value={this.props.sortField} onChange={ this.handleInput } className='form-control'>
+              <option value='' disabled>Sort by</option>
+              <option value='created_at'>Created</option>
+              <option value='title'>Title</option>
+            </select>
+          </div>
+        </div>
         <table className="table">
           <thead>
             <tr>
@@ -35,8 +57,9 @@ class Books extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  books: state.books
+  books: state.books,
+  sortField: state.booksFilters.sortField
 })
 
-export default connect(mapStateToProps, { fetchBooks })(Books)
+export default connect(mapStateToProps, { fetchBooks, sortBooks })(Books)
 

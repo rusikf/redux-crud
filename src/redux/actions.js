@@ -1,4 +1,4 @@
-import { RECEIVE_BOOKS, REQUEST_BOOKS, REMOVE_BOOK, UPDATE_BOOK } from './actionTypes'
+import { SORT_BOOKS, RECEIVE_BOOKS, REQUEST_BOOKS, REMOVE_BOOK, UPDATE_BOOK } from './actionTypes'
 import history from "../utils/history"
 import BooksApi from '../api/books'
 import axios from 'axios'
@@ -17,9 +17,14 @@ export const removeBook = (id) => ({
   id: id
 })
 
-export function fetchBooks() {
+export const sortBooks = ((sortField) => ({
+  type: SORT_BOOKS,
+  sortField
+}))
+
+export function fetchBooks(params={}) {
   return function action(dispatch) {
-    BooksApi.index().then(json => dispatch(receiveBooks(json)))
+    BooksApi.index(params).then(json => dispatch(receiveBooks(json)))
   }
 }
 
